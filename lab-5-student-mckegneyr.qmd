@@ -1,7 +1,9 @@
 ---
-editor: River Mckegney
-  markdown: 
-    wrap: 72
+title: "STAT210 Spring 2025: Lab 5 Student Evals"
+author: "River Mckegney"
+markdown: 
+   wrap: 72
+format: html
 ---
 
 In this lab, we will be using the `dplyr` package to explore student
@@ -157,17 +159,23 @@ variable included in the `teacher_evals_codebook.pdf`.
 **1. Load the appropriate R packages for your analysis.**
 
 ```{r}
-#| label: setup
-# code chunk for loading packages
+#| label: Library setup
+#| echo: true
+#| eval: true
 
+# loading packages
+library(tidyverse)
 ```
 
 **2. Load in the `teacher_evals` data.**
 
 ```{r}
-#| label: load-data
-# code chunk for importing the data
+#| label: Import data
+#| echo: true
+#| eval: true 
 
+# Reading-in the dataset: The call...
+instr_evals <- read.csv("data-raw/teacher_evals.csv")
 ```
 
 ### Data Inspection + Summary
@@ -175,10 +183,16 @@ variable included in the `teacher_evals_codebook.pdf`.
 **3. Provide a brief overview (\~4 sentences) of the dataset.**
 
 ```{r}
-#| label: explore-data
-# you may want to use code to answer this question
+#| label: Data exploration ~ About this dataset
+#| echo: true
+#| eval: true 
 
+# Code used to check out the data
+glimpse(instr_evals)
 ```
+Question 3 answer/response: By River Mckegney
+
+This dataset appears to consist of 22 columns and spans approximately 8,000 rows, comprising data types character, integer, and double. The variables contain information about the instructor, the students, the class itself, and the students evaluations. The dataset appears relatively organized and tidy, as naming for columns and variable values seem consistent throughout, and missing values identified as "NA". Most columns via name are somewhat self explanatory, however without explicit metadata detailing the context of each variable (which I assume is contained within the teacher_evals_codebook.pdf - a document I could not figure out where to access) I may run into trouble figuring out this dataset.
 
 **4. What is the unit of observation (i.e. a single row in the dataset)
 identified by?**
