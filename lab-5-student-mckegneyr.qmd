@@ -199,9 +199,16 @@ identified by?**
 
 ```{r}
 #| label: row-identification
-# you may want to use code to answer this question
+#| echo: true
+#| eval: true
+
+# Code used to view rows of dataset
+head(instr_evals)
 
 ```
+Question 4 answer/response: By River Mckegney
+
+Each row represents an individual observation or case of **a unique question** (from the questionair) and its associated variables collectively from the entire class (of students in a given class) about the given instructor. Calculations of average SET scores are conducted and included in the dataset pertaining to each row or question as an index of the other column variables (ie. such as sample size or "no_participants", average value of student evaluation response scores per question about an instructor, duration of class, student grades, and other factors).  
 
 **5. Use *one*`dplyr` pipeline to clean the data by:**
 
@@ -219,18 +226,55 @@ identified by?**
 
 ```{r}
 #| label: data-cleaning
-# code chunk for Q4
+#| echo: true
+#| eval: true
 
+# Data Filtering
+teacher_evals_clean <- instr_evals %>%
+  filter(!c(no_participants < 10)) %>%
+  rename(sex = gender) %>% # new_name = old_name syntax
+  mutate(teacher_id = factor(teacher_id),                     # <1>
+         question_no = factor(question_no),                   # <1>
+         seniority = factor(seniority)) %>%                   # <1>
+  select(course_id, teacher_id, question_no, no_participants, resp_share, SET_score_avg, percent_failed_cur, academic_degree, seniority, sex)
+
+# Check & make sure it works
+glimpse(teacher_evals_clean)
+head(min(teacher_evals_clean$no_participants))
+
+# Save tidy data into csv, store in tidy-data folder
+write.csv(teacher_evals_clean, 
+          file = "data-tidy/teacher_evals_clean.csv")
 ```
+1. Link for method used to change data type of select columns: <https://r4ds.hadley.nz/data-import>.
 
 **6. How many unique instructors and unique courses are present in the
 cleaned dataset?**
 
 ```{r}
 #| label: unique-courses
-# code chunk for Q5
+#| echo: true
+#| eval: true
+
+# Investigate unique values for course_id and teacher_id
+length(unique(teacher_evals_clean$course_id))
+length(unique(teacher_evals_clean$teacher_id))
+
+# Check to make sure: View A tibble details
+teacher_evals_clean %>% 
+  group_by(course_id) %>%
+  summarise(Total_classes = length(n()))                      # <2>
+
+teacher_evals_clean %>% 
+  group_by(teacher_id) %>%
+  summarise(Total_Instructors = length(n()))                  # <2>
 
 ```
+2. Link that helped me figure out how to count classes and teachers: <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
+
+Question 6 answer/response: By River Mckegney
+
+This dataset appears to contain a total of **939 classes and 297 instructors**. 
 
 **7. One teacher-course combination has some missing values, coded as
 `NA`. Which instructor has these missing values? Which course? What
@@ -293,3 +337,9 @@ to the evaluation across all their courses?**
 # code chunk for Q11
 
 ```
+
+## References:
+1. R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. "7  Data import". Website designed using Quarto. <https://r4ds.hadley.nz/data-import>.
+
+2. Stack overflow. "In R, how do I count unique values of a factor based on another factor?". Last modified 2016-07-14. <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
+

@@ -175,8 +175,14 @@ glimpse(instr_evals)</code></pre>
 <p>This dataset appears to consist of 22 columns and spans approximately 8,000 rows, comprising data types character, integer, and double. The variables contain information about the instructor, the students, the class itself, and the students evaluations. The dataset appears relatively organized and tidy, as naming for columns and variable values seem consistent throughout, and missing values identified as “NA”. Most columns via name are somewhat self explanatory, however without explicit metadata detailing the context of each variable (which I assume is contained within the teacher_evals_codebook.pdf - a document I could not figure out where to access) I may run into trouble figuring out this dataset.</p>
 <p><strong>4. What is the unit of observation (i.e.&nbsp;a single row in the dataset) identified by?</strong></p>
 <pre class="{r}"><code>#| label: row-identification
-# you may want to use code to answer this question
+#| echo: true
+#| eval: true
+
+# Code used to view rows of dataset
+head(instr_evals)
 </code></pre>
+<p>Question 4 answer/response: By River Mckegney</p>
+<p>Each row represents an individual observation or case of <strong>a unique question</strong> (from the questionair) and its associated variables collectively from the entire class (of students in a given class) about the given instructor. Calculations of average SET scores are conducted and included in the dataset pertaining to each row or question as an index of the other column variables (ie. such as sample size or “no_participants”, average value of student evaluation response scores per question about an instructor, duration of class, student grades, and other factors).</p>
 <p><strong>5. Use <em>one</em><code>dplyr</code> pipeline to clean the data by:</strong></p>
 <ul>
 <li><strong>renaming the <code>gender</code> variable <code>sex</code></strong></li>
@@ -185,13 +191,57 @@ glimpse(instr_evals)</code></pre>
 <li><strong>only keeping the columns we will use – <code>course_id</code>, <code>teacher_id</code>, <code>question_no</code>, <code>no_participants</code>, <code>resp_share</code>, <code>SET_score_avg</code>, <code>percent_failed_cur</code>, <code>academic_degree</code>, <code>seniority</code>, and <code>sex</code></strong></li>
 </ul>
 <p><strong>Assign your cleaned data to a new variable named <code>teacher_evals_clean</code> –- use these data going forward. Save the data as <code>teacher_evals_clean.csv</code> in the <code>data-clean</code> folder.</strong></p>
-<pre class="{r}"><code>#| label: data-cleaning
-# code chunk for Q4
-</code></pre>
+<pre id="annotated-cell-6" class="{r} code-annotation-code"><code>#| label: data-cleaning
+#| echo: true
+#| eval: true
+
+# Data Filtering
+teacher_evals_clean &lt;- instr_evals %&gt;%
+  filter(!c(no_participants &lt; 10)) %&gt;%
+  rename(sex = gender) %&gt;% # new_name = old_name syntax
+  mutate(teacher_id = factor(teacher_id),
+         question_no = factor(question_no),
+         seniority = factor(seniority)) %&gt;%
+  select(course_id, teacher_id, question_no, no_participants, resp_share, SET_score_avg, percent_failed_cur, academic_degree, seniority, sex)
+
+# Check &amp; make sure it works
+glimpse(teacher_evals_clean)
+head(min(teacher_evals_clean$no_participants))
+
+# Save tidy data into csv, store in tidy-data folder
+write.csv(teacher_evals_clean, 
+          file = "data-tidy/teacher_evals_clean.csv")</code></pre>
+<dl>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="9,10,11" data-code-annotation="1">Link for method used to change data type of select columns: <a href="https://r4ds.hadley.nz/data-import" class="uri">https://r4ds.hadley.nz/data-import</a>.</span>
+</dd>
+</dl>
 <p><strong>6. How many unique instructors and unique courses are present in the cleaned dataset?</strong></p>
-<pre class="{r}"><code>#| label: unique-courses
-# code chunk for Q5
-</code></pre>
+<pre id="annotated-cell-7" class="{r} code-annotation-code"><code>#| label: unique-courses
+#| echo: true
+#| eval: true
+
+# Investigate unique values for course_id and teacher_id
+length(unique(teacher_evals_clean$course_id))
+length(unique(teacher_evals_clean$teacher_id))
+
+# Check to make sure: View A tibble details
+teacher_evals_clean %&gt;% 
+  group_by(course_id) %&gt;%
+  summarise(Total_classes = length(n()))
+
+teacher_evals_clean %&gt;% 
+  group_by(teacher_id) %&gt;%
+  summarise(Total_Instructors = length(n()))</code></pre>
+<dl>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="12,16" data-code-annotation="2">Link that helped me figure out how to count classes and teachers: <a href="https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor" class="uri">https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor</a>.</span>
+</dd>
+</dl>
+<p>Question 6 answer/response: By River Mckegney</p>
+<p>This dataset appears to contain a total of <strong>939 classes and 297 instructors</strong>.</p>
 <p><strong>7. One teacher-course combination has some missing values, coded as <code>NA</code>. Which instructor has these missing values? Which course? What variable are the missing values in?</strong></p>
 <pre class="{r}"><code>#| label: uncovering-missing-values
 # code chunk for Q6
@@ -220,6 +270,13 @@ glimpse(instr_evals)</code></pre>
 <pre class="{r}"><code>#| label: female-instructor-student-response
 # code chunk for Q11
 </code></pre>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ol type="1">
+<li><p>R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. “7 Data import”. Website designed using Quarto. <a href="https://r4ds.hadley.nz/data-import" class="uri">https://r4ds.hadley.nz/data-import</a>.</p></li>
+<li><p>Stack overflow. “In R, how do I count unique values of a factor based on another factor?”. Last modified 2016-07-14. <a href="https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor" class="uri">https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor</a>.</p></li>
+</ol>
 </section>
 </section>
 
