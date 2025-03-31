@@ -270,11 +270,11 @@ teacher_evals_clean %>%
   summarise(Total_Instructors = length(n()))                  # <2>
 
 ```
-2. Link that helped me figure out how to count classes and teachers: <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
+2. Link that helped me figure out how to count unique classes and teachers: <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
 
 Question 6 answer/response: By River Mckegney
 
-This dataset appears to contain a total of **939 classes and 297 instructors**. 
+This dataset appears to contain a total of 939 unique classes/courses and 297 instructors. 
 
 **7. One teacher-course combination has some missing values, coded as
 `NA`. Which instructor has these missing values? Which course? What
@@ -282,9 +282,21 @@ variable are the missing values in?**
 
 ```{r}
 #| label: uncovering-missing-values
-# code chunk for Q6
+#| echo: true
+#| eval: true
+
+# Quest. 7. Finding NAs 
+
+teacher_evals_clean %>%
+  group_by(teacher_id, course_id) %>%
+  filter(if_any(everything(), is.na))                        # <3>
 
 ```
+3. How to filter for NA values: <https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
+
+Question 7 answer/response: By River Mckegney
+
+The class that contains NAs is course ID PAB3SE004PA, with instructor ID 56347. The missing values are located within the column "percent_failed_cur".
 
 **8. What are the demographics of the instructors in this study?
 Investigate the variables `academic_degree`, `seniority`, and `sex` and
@@ -292,7 +304,7 @@ summarize your findings in \~3 complete sentences.**
 
 ```{r}
 #| label: exploring-demographics-of-instructors
-# code chunk for Q7
+# code chunk for Q8
 
 ```
 
@@ -343,3 +355,4 @@ to the evaluation across all their courses?**
 
 2. Stack overflow. "In R, how do I count unique values of a factor based on another factor?". Last modified 2016-07-14. <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
 
+3. Stack overflow. "How to filter for rows containing NA?". Last modified 2022-11-21. <https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
