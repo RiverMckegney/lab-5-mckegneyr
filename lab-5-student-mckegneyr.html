@@ -243,16 +243,90 @@ teacher_evals_clean %&gt;%
 <p>Question 6 answer/response: By River Mckegney</p>
 <p>This dataset appears to contain a total of 939 unique classes/courses and 297 instructors.</p>
 <p><strong>7. One teacher-course combination has some missing values, coded as <code>NA</code>. Which instructor has these missing values? Which course? What variable are the missing values in?</strong></p>
-<pre class="{r}"><code>#| label: uncovering-missing-values
-# code chunk for Q6
-</code></pre>
+<pre id="annotated-cell-8" class="{r} code-annotation-code"><code>#| label: uncovering-missing-values
+#| echo: true
+#| eval: true
+
+# Quest. 7. Finding NAs 
+
+teacher_evals_clean %&gt;%
+  group_by(teacher_id, course_id) %&gt;%
+  filter(if_any(everything(), is.na))</code></pre>
+<dl>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="9" data-code-annotation="3">How to filter for NA values: <a href="https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na" class="uri">https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na</a>.</span>
+</dd>
+</dl>
+<p>Question 7 answer/response: By River Mckegney</p>
+<p>The class that contains NAs is course ID PAB3SE004PA, with instructor ID 56347. The missing values are located within the column “percent_failed_cur”.</p>
 <p><strong>8. What are the demographics of the instructors in this study? Investigate the variables <code>academic_degree</code>, <code>seniority</code>, and <code>sex</code> and summarize your findings in ~3 complete sentences.</strong></p>
 <pre class="{r}"><code>#| label: exploring-demographics-of-instructors
-# code chunk for Q7
-</code></pre>
+#| echo: true
+#| eval: true
+
+# Quest 8. Summary stats about instructors
+
+# Count total unique/distinct male instructors
+teacher_evals_clean %&gt;%
+  filter(sex == "male") %&gt;%
+  distinct(teacher_id) %&gt;%
+  count()
+
+# Count total unique/distinct female instructors
+teacher_evals_clean %&gt;%
+  filter(sex == "female") %&gt;%
+  distinct(teacher_id) %&gt;%
+  count() 
+
+# Calculate proportion of gender
+teacher_evals_clean %&gt;%
+  summarize(prop_male = 161/297,
+            prop_female = 136/297)
+
+# Generate table of total degree types from all individual instructors
+teacher_evals_clean %&gt;%
+  group_by(academic_degree) %&gt;%
+  distinct(teacher_id) %&gt;%
+  summarize(n_degree_type = n())
+
+# Calculate degree field proportions
+teacher_evals_clean %&gt;%
+  group_by(academic_degree) %&gt;%
+  distinct(teacher_id) %&gt;%
+  summarize(
+    prop_no_deg = sum(academic_degree == "no_dgr")/297,
+    prop_ma = sum(academic_degree == "ma")/297,
+    prop_dr = sum(academic_degree == "dr")/297,
+    prop_prof = sum(academic_degree == "prof")/297)
+
+# And/or calculate percent degree types: neat table
+teacher_evals_clean %&gt;%
+  group_by(academic_degree) %&gt;%
+  distinct(teacher_id) %&gt;%
+  summarize(percent_deg_type = sum(n()/297*100))
+
+
+# Table of seniority ranking proportions
+teacher_evals_clean %&gt;%
+  group_by(seniority) %&gt;%
+  distinct(teacher_id) %&gt;%
+  summarize(n_seniority = n())
+
+# Calculate proportion of seniority
+teacher_evals_clean %&gt;%
+  group_by(seniority) %&gt;%
+  distinct(teacher_id) %&gt;%
+  summarize(Percent_rank = sum(n()/297*100))</code></pre>
+<p>Question 8 answer/response: By River Mckegney</p>
+<p>This dataset comprises approximately 54% male and 46% female instructors. More than half (about 57%) of the teachers have doctorate degrees, while a quarter (roughly 26%) have master degrees, 14% have no degree, and 3% have professional degrees. The majority of instructors (about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1 (approx. 11%), 8 (approx. 10%), and 4 (approx. 8%) respectively.</p>
 <p><strong>9. Each course seems to have used a different subset of the nine evaluation questions. How many teacher-course combinations asked all nine questions?</strong></p>
 <pre class="{r}"><code>#| label: teacher-course-asked-every-question
-# code chunk for Q8
+#| echo: true
+#| eval: true
+
+# Classes that conducted entire questionair
+
 </code></pre>
 </section>
 </section>
@@ -276,6 +350,7 @@ teacher_evals_clean %&gt;%
 <ol type="1">
 <li><p>R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. “7 Data import”. Website designed using Quarto. <a href="https://r4ds.hadley.nz/data-import" class="uri">https://r4ds.hadley.nz/data-import</a>.</p></li>
 <li><p>Stack overflow. “In R, how do I count unique values of a factor based on another factor?”. Last modified 2016-07-14. <a href="https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor" class="uri">https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor</a>.</p></li>
+<li><p>Stack overflow. “How to filter for rows containing NA?”. Last modified 2022-11-21. <a href="https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na" class="uri">https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na</a>.</p></li>
 </ol>
 </section>
 </section>

@@ -304,9 +304,67 @@ summarize your findings in \~3 complete sentences.**
 
 ```{r}
 #| label: exploring-demographics-of-instructors
-# code chunk for Q8
+#| echo: true
+#| eval: true
 
+# Quest 8. Summary stats about instructors
+
+# Count total unique/distinct male instructors
+teacher_evals_clean %>%
+  filter(sex == "male") %>%
+  distinct(teacher_id) %>%
+  count()
+
+# Count total unique/distinct female instructors
+teacher_evals_clean %>%
+  filter(sex == "female") %>%
+  distinct(teacher_id) %>%
+  count() 
+
+# Calculate proportion of gender
+teacher_evals_clean %>%
+  summarize(prop_male = 161/297,
+            prop_female = 136/297)
+
+# Generate table of total degree types from all individual instructors
+teacher_evals_clean %>%
+  group_by(academic_degree) %>%
+  distinct(teacher_id) %>%
+  summarize(n_degree_type = n())
+
+# Calculate degree field proportions
+teacher_evals_clean %>%
+  group_by(academic_degree) %>%
+  distinct(teacher_id) %>%
+  summarize(
+    prop_no_deg = sum(academic_degree == "no_dgr")/297,
+    prop_ma = sum(academic_degree == "ma")/297,
+    prop_dr = sum(academic_degree == "dr")/297,
+    prop_prof = sum(academic_degree == "prof")/297)
+
+# And/or calculate percent degree types: neat table
+teacher_evals_clean %>%
+  group_by(academic_degree) %>%
+  distinct(teacher_id) %>%
+  summarize(percent_deg_type = sum(n()/297*100))
+
+
+# Table of seniority ranking proportions
+teacher_evals_clean %>%
+  group_by(seniority) %>%
+  distinct(teacher_id) %>%
+  summarize(n_seniority = n())
+
+# Calculate proportion of seniority
+teacher_evals_clean %>%
+  group_by(seniority) %>%
+  distinct(teacher_id) %>%
+  summarize(Percent_rank = sum(n()/297*100))
 ```
+
+Question 8 answer/response: By River Mckegney
+
+This dataset comprises approximately 54% male and 46% female instructors. More than half (about 57%) of the teachers have doctorate degrees, while a quarter (roughly 26%) have master degrees, 14% have no degree, and 3% have professional degrees. The majority of instructors (about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1 (approx. 11%), 8 (approx. 10%), and 4 (approx. 8%) respectively. 
 
 **9. Each course seems to have used a different subset of the nine
 evaluation questions. How many teacher-course combinations asked all
@@ -314,7 +372,11 @@ nine questions?**
 
 ```{r}
 #| label: teacher-course-asked-every-question
-# code chunk for Q8
+#| echo: true
+#| eval: true
+
+# Classes that conducted entire questionair
+
 
 ```
 
