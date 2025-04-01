@@ -341,6 +341,7 @@ teacher_evals_clean %>%
     prop_ma = sum(academic_degree == "ma")/297,
     prop_dr = sum(academic_degree == "dr")/297,
     prop_prof = sum(academic_degree == "prof")/297)
+# New: Its possible to use a filter within summarize as well as during calculations
 
 # And/or calculate percent degree types: neat table
 teacher_evals_clean %>%
@@ -364,7 +365,7 @@ teacher_evals_clean %>%
 
 Question 8 answer/response: By River Mckegney
 
-This dataset comprises approximately 54% male and 46% female instructors. More than half (about 57%) of the teachers have doctorate degrees, while a quarter (roughly 26%) have master degrees, 14% have no degree, and 3% have professional degrees. The majority of instructors (about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1 (approx. 11%), 8 (approx. 10%), and 4 (approx. 8%) respectively. 
+This dataset comprises approximately 54% male and 46% female instructors. More than half (about 57%) of the teachers have doctorate degrees, while a quarter (roughly 26%) have master degrees, 14% have no degree, and 3% have professional degrees. The majority of instructors (about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1 (approx. 11%), 8 (approx. 10%), 4 (approx. 8%), followed by 3, 5, 7 (all equivalent and about 5.4% each), 10 (approx. 5%), and 9 (approx. 3%) respectively. 
 
 **9. Each course seems to have used a different subset of the nine
 evaluation questions. How many teacher-course combinations asked all
@@ -377,7 +378,24 @@ nine questions?**
 
 # Classes that conducted entire questionair
 
+teacher_evals_clean %>%
+  group_by(course_id, teacher_id) %>%
+  distinct(course_id, teacher_id) %>%
+  filter("question_no" == "901")
 
+         question_no == "902"
+         question_no == "903",
+         question_no == "904",
+         question_no == "905",
+         question_no == "906",
+         question_no == "907",
+         question_no == "908",
+         question_no == "909")
+
+teacher_evals_clean %>%
+  group_by(question_no) %>%
+  distinct(course_id, teacher_id) %>%
+  filter(question_no == c("901", "902"))
 ```
 
 ## Rate my Professor
