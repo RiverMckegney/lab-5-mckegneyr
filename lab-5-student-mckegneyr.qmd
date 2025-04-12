@@ -378,25 +378,21 @@ nine questions?**
 
 # Classes that conducted entire questionair
 
-teacher_evals_clean %>%
-  group_by(course_id, teacher_id) %>%
-  distinct(course_id, teacher_id) %>%
-  filter("question_no" == "901")
-
-         question_no == "902"
-         question_no == "903",
-         question_no == "904",
-         question_no == "905",
-         question_no == "906",
-         question_no == "907",
-         question_no == "908",
-         question_no == "909")
-
-teacher_evals_clean %>%
-  group_by(question_no) %>%
-  distinct(course_id, teacher_id) %>%
-  filter(question_no == c("901", "902"))
+  teacher_evals_clean %>%
+    group_by(course_id, teacher_id) %>%
+    summarize(question_count = n_distinct(question_no)) %>%
+    ungroup() %>%
+    filter(question_count == 9)
+  
+# Sample Test: confirm code above works
+  teacher_evals_clean %>%
+    filter(course_id == "0000-SEM-SP",
+           teacher_id == "38335")
 ```
+
+Question 9 answer/response: River Mckegney
+
+It appears 49 teacher/course combos (aka specific class sections) contained all 9 questions of the questionair. 
 
 ## Rate my Professor
 
