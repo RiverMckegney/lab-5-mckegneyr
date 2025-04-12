@@ -380,7 +380,7 @@ nine questions?**
 
   teacher_evals_clean %>%
     group_by(course_id, teacher_id) %>%
-    summarize(question_count = n_distinct(question_no)) %>%
+    summarize(question_count = n_distinct(question_no)) %>%   # <4>
     ungroup() %>%
     filter(question_count == 9)
   
@@ -389,8 +389,9 @@ nine questions?**
     filter(course_id == "0000-SEM-SP",
            teacher_id == "38335")
 ```
+4. Source used to figure out how to count questions for each teacher-course combo: <https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition>
 
-Question 9 answer/response: River Mckegney
+Question 9 answer/response: By River Mckegney
 
 It appears 49 teacher/course combos (aka specific class sections) contained all 9 questions of the questionair. 
 
@@ -432,3 +433,5 @@ to the evaluation across all their courses?**
 2. Stack overflow. "In R, how do I count unique values of a factor based on another factor?". Last modified 2016-07-14. <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
 
 3. Stack overflow. "How to filter for rows containing NA?". Last modified 2022-11-21. <https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
+
+4. Stack overflow. "dplyr n_distinct with condition". Last modified 2022-11-02. <https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition>.

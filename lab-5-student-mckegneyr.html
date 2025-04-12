@@ -322,7 +322,7 @@ teacher_evals_clean %&gt;%
 <p>Question 8 answer/response: By River Mckegney</p>
 <p>This dataset comprises approximately 54% male and 46% female instructors. More than half (about 57%) of the teachers have doctorate degrees, while a quarter (roughly 26%) have master degrees, 14% have no degree, and 3% have professional degrees. The majority of instructors (about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1 (approx. 11%), 8 (approx. 10%), 4 (approx. 8%), followed by 3, 5, 7 (all equivalent and about 5.4% each), 10 (approx. 5%), and 9 (approx. 3%) respectively.</p>
 <p><strong>9. Each course seems to have used a different subset of the nine evaluation questions. How many teacher-course combinations asked all nine questions?</strong></p>
-<pre class="{r}"><code>#| label: teacher-course-asked-every-question
+<pre id="annotated-cell-10" class="{r} code-annotation-code"><code>#| label: teacher-course-asked-every-question
 #| echo: true
 #| eval: true
 
@@ -338,7 +338,13 @@ teacher_evals_clean %&gt;%
   teacher_evals_clean %&gt;%
     filter(course_id == "0000-SEM-SP",
            teacher_id == "38335")</code></pre>
-<p>Question 9 answer/response: River Mckegney</p>
+<dl>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="9" data-code-annotation="4">Source used to figure out how to count questions for each teacher-course combo: <a href="https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition" class="uri">https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition</a></span>
+</dd>
+</dl>
+<p>Question 9 answer/response: By River Mckegney</p>
 <p>It appears 49 teacher/course combos (aka specific class sections) contained all 9 questions of the questionair.</p>
 </section>
 </section>
@@ -363,6 +369,7 @@ teacher_evals_clean %&gt;%
 <li><p>R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. “7 Data import”. Website designed using Quarto. <a href="https://r4ds.hadley.nz/data-import" class="uri">https://r4ds.hadley.nz/data-import</a>.</p></li>
 <li><p>Stack overflow. “In R, how do I count unique values of a factor based on another factor?”. Last modified 2016-07-14. <a href="https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor" class="uri">https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor</a>.</p></li>
 <li><p>Stack overflow. “How to filter for rows containing NA?”. Last modified 2022-11-21. <a href="https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na" class="uri">https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na</a>.</p></li>
+<li><p>Stack overflow. “dplyr n_distinct with condition”. Last modified 2022-11-02. <a href="https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition" class="uri">https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition</a>.</p></li>
 </ol>
 </section>
 </section>
