@@ -4,6 +4,8 @@ author: "River Mckegney"
 markdown: 
    wrap: 72
 format: html
+execute: 
+  echo: true
 ---
 
 In this lab, we will be using the `dplyr` package to explore student
@@ -158,11 +160,14 @@ variable included in the `teacher_evals_codebook.pdf`.
 
 **1. Load the appropriate R packages for your analysis.**
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, output = TRUE)
+```
+
 ```{r}
 #| label: Library setup
-#| echo: true
-#| eval: true
-
+#| echo: TRUE
+  
 # loading packages
 library(tidyverse)
 ```
@@ -171,8 +176,7 @@ library(tidyverse)
 
 ```{r}
 #| label: Import data
-#| echo: true
-#| eval: true 
+#| echo: TRUE
 
 # Reading-in the dataset: The call...
 instr_evals <- read.csv("data-raw/teacher_evals.csv")
@@ -184,8 +188,6 @@ instr_evals <- read.csv("data-raw/teacher_evals.csv")
 
 ```{r}
 #| label: Data exploration ~ About this dataset
-#| echo: true
-#| eval: true 
 
 # Code used to check out the data
 glimpse(instr_evals)
@@ -402,10 +404,46 @@ Question 1 (I learnt a lot during the course.) across all their
 courses?**
 
 ```{r}
-#| label: question-1-high-low
-# code chunk for Q9
+#| label: quest 10 high & low instructor avg SET score 
+#| echo: true
+
+# Quest 10
+
+# Why max and min do not work here???
+# teacher_evals_clean %>%
+#   filter(question_no == "901") %>%
+#   group_by(teacher_id) %>%
+#   summarize(high_score = max(SET_score_avg),
+#             low_score = min(SET_score_avg))
+
+         
+# How to make this method work???
+# teacher_evals_clean %>%
+#   filter(question_no == "901") %>%
+#   mutate(max_score = filter(SET_score_avg == 5),
+#          min_score = filter(SET_score_avg == 1))
+#          %>%
+#   group_by(teacher_id) 
+
+
+# Alternative method(s)
+teacher_evals_clean %>%
+  filter(question_no == "901",
+         SET_score_avg == 5) %>%
+  distinct(course_id, teacher_id, .keep_all = TRUE) %>%
+  select(course_id, teacher_id, SET_score_avg)
+
+teacher_evals_clean %>%
+  filter(question_no == "901",
+         SET_score_avg == 1) %>%
+  group_by(course_id, teacher_id) %>%
+  select(course_id, teacher_id, SET_score_avg)
+  
 
 ```
+Question 10 answer/response: By River Mckegney
+
+It appears 38 instructor course combinations scored the highest rank, while 8 instructor course combinations scored the lowest.
 
 **11. Which instructors with one year of experience had the highest and
 lowest average percentage of students failing in the current semester
@@ -413,9 +451,21 @@ across all their courses?**
 
 ```{r}
 #| label: one-year-experience-failing-students
-# code chunk for Q10
 
+# Quest 11
+teacher_evals_clean %>%
+  filter(seniority == "1") %>%
+  group_by(teacher_id) %>%
+  summarize(highs = max(percent_failed_cur),
+            lows = min(percent_failed_cur)) %>%
+  ungroup() %>%
+  mutate(difference = (highs - lows)) %>%
+  arrange(desc(difference))
 ```
+
+Question 11 answer/response: By River Mckegney
+
+It appears that instructors 104362 (about 70%) followed by 84688 (about 50%), and 101703 (35%) show the greatest range between max and min values for percent of students that failed the class.
 
 **12. Which female instructors with either a doctorate or professional
 degree had the highest and lowest average percent of students responding

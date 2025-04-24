@@ -149,16 +149,15 @@ To https://github.com/atheobold/introduction-to-quarto-allison-theobold.git
 <p>This rich dataset allows us to <strong>investigate many of the biases in student evaluations of teaching</strong> that have been reported in the literature and to formulate new hypotheses.</p>
 <p>Before tackling the problems below, study the description of each variable included in the <code>teacher_evals_codebook.pdf</code>.</p>
 <p><strong>1. Load the appropriate R packages for your analysis.</strong></p>
+<p><code>{r setup, include=FALSE} knitr::opts_chunk$set(echo = TRUE, include = TRUE, output = TRUE)</code></p>
 <pre class="{r}"><code>#| label: Library setup
-#| echo: true
-#| eval: true
-
+#| echo: TRUE
+  
 # loading packages
 library(tidyverse)</code></pre>
 <p><strong>2. Load in the <code>teacher_evals</code> data.</strong></p>
 <pre class="{r}"><code>#| label: Import data
-#| echo: true
-#| eval: true 
+#| echo: TRUE
 
 # Reading-in the dataset: The call...
 instr_evals &lt;- read.csv("data-raw/teacher_evals.csv")</code></pre>
@@ -166,8 +165,6 @@ instr_evals &lt;- read.csv("data-raw/teacher_evals.csv")</code></pre>
 <h3 class="anchored" data-anchor-id="data-inspection-summary">Data Inspection + Summary</h3>
 <p><strong>3. Provide a brief overview (~4 sentences) of the dataset.</strong></p>
 <pre class="{r}"><code>#| label: Data exploration ~ About this dataset
-#| echo: true
-#| eval: true 
 
 # Code used to check out the data
 glimpse(instr_evals)</code></pre>
@@ -351,13 +348,58 @@ teacher_evals_clean %&gt;%
 <section id="rate-my-professor" class="level2">
 <h2 class="anchored" data-anchor-id="rate-my-professor">Rate my Professor</h2>
 <p><strong>10. Which instructors had the highest and lowest average rating for Question 1 (I learnt a lot during the course.) across all their courses?</strong></p>
-<pre class="{r}"><code>#| label: question-1-high-low
-# code chunk for Q9
+<pre class="{r}"><code>#| label: quest 10 high &amp; low instructor avg SET score 
+#| echo: true
+
+# Quest 10
+
+# Why max and min do not work here???
+# teacher_evals_clean %&gt;%
+#   filter(question_no == "901") %&gt;%
+#   group_by(teacher_id) %&gt;%
+#   summarize(high_score = max(SET_score_avg),
+#             low_score = min(SET_score_avg))
+
+         
+# How to make this method work???
+# teacher_evals_clean %&gt;%
+#   filter(question_no == "901") %&gt;%
+#   mutate(max_score = filter(SET_score_avg == 5),
+#          min_score = filter(SET_score_avg == 1))
+#          %&gt;%
+#   group_by(teacher_id) 
+
+
+# Alternative method(s)
+teacher_evals_clean %&gt;%
+  filter(question_no == "901",
+         SET_score_avg == 5) %&gt;%
+  distinct(course_id, teacher_id, .keep_all = TRUE) %&gt;%
+  select(course_id, teacher_id, SET_score_avg)
+
+teacher_evals_clean %&gt;%
+  filter(question_no == "901",
+         SET_score_avg == 1) %&gt;%
+  group_by(course_id, teacher_id) %&gt;%
+  select(course_id, teacher_id, SET_score_avg)
+  
 </code></pre>
+<p>Question 10 answer/response: By River Mckegney</p>
+<p>It appears 38 instructor course combinations scored the highest rank, while 8 instructor course combinations scored the lowest.</p>
 <p><strong>11. Which instructors with one year of experience had the highest and lowest average percentage of students failing in the current semester across all their courses?</strong></p>
 <pre class="{r}"><code>#| label: one-year-experience-failing-students
-# code chunk for Q10
-</code></pre>
+
+# Quest 11
+teacher_evals_clean %&gt;%
+  filter(seniority == "1") %&gt;%
+  group_by(teacher_id) %&gt;%
+  summarize(highs = max(percent_failed_cur),
+            lows = min(percent_failed_cur)) %&gt;%
+  ungroup() %&gt;%
+  mutate(difference = (highs - lows)) %&gt;%
+  arrange(desc(difference))</code></pre>
+<p>Question 11 answer/response: By River Mckegney</p>
+<p>It appears that instructors 104362 (about 70%) followed by 84688 (about 50%), and 101703 (35%) show the greatest range between max and min values for percent of students that failed the class.</p>
 <p><strong>12. Which female instructors with either a doctorate or professional degree had the highest and lowest average percent of students responding to the evaluation across all their courses?</strong></p>
 <pre class="{r}"><code>#| label: female-instructor-student-response
 # code chunk for Q11
