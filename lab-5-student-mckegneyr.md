@@ -1,12 +1,5 @@
----
-title: "STAT210 Spring 2025: Lab 5 Student Evals"
-author: "River Mckegney"
-markdown: 
-   wrap: 72
-format: md
-execute: 
-  echo: true
----
+# STAT210 Spring 2025: Lab 5 Student Evals
+River Mckegney
 
 In this lab, we will be using the `dplyr` package to explore student
 evaluations of teaching data.
@@ -24,22 +17,20 @@ can successfully push to GitHub. To do this you need to:
     your name.
 -   Save your file either by clicking on the blue floppy disk or with a
     shortcut (command / control + s).
--   Click the "Git" tab in upper right pane
--   Check the "Staged" box for the `lab-5-student.qmd` file (the file
+-   Click the “Git” tab in upper right pane
+-   Check the “Staged” box for the `lab-5-student.qmd` file (the file
     you changed)
--   Click "Commit"
--   In the box that opens, type a message in "Commit message", such as
-    "Added my name".
--   Click "Commit".
--   Click the green "Push" button to send your local changes to GitHub.
+-   Click “Commit”
+-   In the box that opens, type a message in “Commit message”, such as
+    “Added my name”.
+-   Click “Commit”.
+-   Click the green “Push” button to send your local changes to GitHub.
 
 RStudio will display something like:
 
-```         
->>> /usr/bin/git push origin HEAD:refs/heads/main
-To https://github.com/atheobold/introduction-to-quarto-allison-theobold.git
-   3a2171f..6d58539  HEAD -> main
-```
+    >>> /usr/bin/git push origin HEAD:refs/heads/main
+    To https://github.com/atheobold/introduction-to-quarto-allison-theobold.git
+       3a2171f..6d58539  HEAD -> main
 
 Now you are ready to go! Remember, as you are going through the lab I
 would strongly recommend rendering your HTML and committing your after
@@ -49,16 +40,16 @@ would strongly recommend rendering your HTML and committing your after
 
 Part of learning to program is learning from a variety of resources.
 Thus, I expect you will use resources that you find on the internet.
-There is, however, an important balance between copying someone else's
+There is, however, an important balance between copying someone else’s
 code and *using their code to learn*.
 
 Therefore, if you use external resources, I want to know about it.
 
--   If you used Google, you are expected to "inform" me of any resources
+-   If you used Google, you are expected to “inform” me of any resources
     you used by **pasting the link to the resource in a code comment
     next to where you used that resource**.
 
--   If you used ChatGPT, you are expected to "inform" me of the
+-   If you used ChatGPT, you are expected to “inform” me of the
     assistance you received by (1) indicating somewhere in the problem
     that you used ChatGPT (e.g., below the question prompt or as a code
     comment), and (2) downloading and including the `.txt` file
@@ -67,7 +58,7 @@ Therefore, if you use external resources, I want to know about it.
 Additionally, you are permitted and encouraged to work with your peers
 as you complete lab assignments, but **you are expected to do your own
 work**. Copying from each other is cheating, and letting people copy
-from you is also cheating. Please don't do either of those things.
+from you is also cheating. Please don’t do either of those things.
 
 ## Setting Up Your Code Chunks
 
@@ -92,7 +83,7 @@ from you is also cheating. Please don't do either of those things.
         `error: true`, which will allow the file to render even if
         errors are present.
 
-# Part 3: Let's Start Working with the Data!
+# Part 3: Let’s Start Working with the Data!
 
 ## The Data
 
@@ -160,11 +151,9 @@ variable included in the `teacher_evals_codebook.pdf`.
 
 **1. Load the appropriate R packages for your analysis.**
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = TRUE, output = TRUE)
-```
+`{r setup, include=FALSE} knitr::opts_chunk$set(echo = TRUE, include = TRUE, output = TRUE)`
 
-```{r}
+``` {r}
 #| label: Library setup
 #| echo: TRUE
   
@@ -174,7 +163,7 @@ library(tidyverse)
 
 **2. Load in the `teacher_evals` data.**
 
-```{r}
+``` {r}
 #| label: Import data
 #| echo: TRUE
 
@@ -184,33 +173,52 @@ instr_evals <- read.csv("data-raw/teacher_evals.csv")
 
 ### Data Inspection + Summary
 
-**3. Provide a brief overview (\~4 sentences) of the dataset.**
+**3. Provide a brief overview (~4 sentences) of the dataset.**
 
-```{r}
+``` {r}
 #| label: Data exploration ~ About this dataset
 
 # Code used to check out the data
 glimpse(instr_evals)
 ```
+
 Question 3 answer/response: By River Mckegney
 
-This dataset appears to consist of 22 columns and spans approximately 8,000 rows, comprising data types character, integer, and double. The variables contain information about the instructor, the students, the class itself, and the students evaluations. The dataset appears relatively organized and tidy, as naming for columns and variable values seem consistent throughout, and missing values identified as "NA". Most columns via name are somewhat self explanatory, however without explicit metadata detailing the context of each variable (which I assume is contained within the teacher_evals_codebook.pdf - a document I could not figure out where to access) I may run into trouble figuring out this dataset.
+This dataset appears to consist of 22 columns and spans approximately
+8,000 rows, comprising data types character, integer, and double. The
+variables contain information about the instructor, the students, the
+class itself, and the students evaluations. The dataset appears
+relatively organized and tidy, as naming for columns and variable values
+seem consistent throughout, and missing values identified as “NA”. Most
+columns via name are somewhat self explanatory, however without explicit
+metadata detailing the context of each variable (which I assume is
+contained within the teacher_evals_codebook.pdf - a document I could not
+figure out where to access) I may run into trouble figuring out this
+dataset.
 
-**4. What is the unit of observation (i.e. a single row in the dataset)
+**4. What is the unit of observation (i.e. a single row in the dataset)
 identified by?**
 
-```{r}
+``` {r}
 #| label: row-identification
 #| echo: true
 #| eval: true
 
 # Code used to view rows of dataset
 head(instr_evals)
-
 ```
+
 Question 4 answer/response: By River Mckegney
 
-Each row represents an individual observation or case of **a unique question** (from the questionair) and its associated variables collectively from the entire class (of students in a given class) about the given instructor. Calculations of average SET scores are conducted and included in the dataset pertaining to each row or question as an index of the other column variables (ie. such as sample size or "no_participants", average value of student evaluation response scores per question about an instructor, duration of class, student grades, and other factors).  
+Each row represents an individual observation or case of **a unique
+question** (from the questionair) and its associated variables
+collectively from the entire class (of students in a given class) about
+the given instructor. Calculations of average SET scores are conducted
+and included in the dataset pertaining to each row or question as an
+index of the other column variables (ie. such as sample size or
+“no_participants”, average value of student evaluation response scores
+per question about an instructor, duration of class, student grades, and
+other factors).
 
 **5. Use *one*`dplyr` pipeline to clean the data by:**
 
@@ -218,7 +226,7 @@ Each row represents an individual observation or case of **a unique question** (
 -   **removing all courses with fewer than 10 respondents**
 -   **changing data types in whichever way you see fit (e.g., is the
     instructor ID really a numeric data type?)**
--   **only keeping the columns we will use -- `course_id`, `teacher_id`,
+-   **only keeping the columns we will use – `course_id`, `teacher_id`,
     `question_no`, `no_participants`, `resp_share`, `SET_score_avg`,
     `percent_failed_cur`, `academic_degree`, `seniority`, and `sex`**
 
@@ -226,7 +234,7 @@ Each row represents an individual observation or case of **a unique question** (
 –- use these data going forward. Save the data as
 `teacher_evals_clean.csv` in the `data-clean` folder.**
 
-```{r}
+``` {r}
 #| label: data-cleaning
 #| echo: true
 #| eval: true
@@ -235,9 +243,9 @@ Each row represents an individual observation or case of **a unique question** (
 teacher_evals_clean <- instr_evals %>%
   filter(!c(no_participants < 10)) %>%
   rename(sex = gender) %>% # new_name = old_name syntax
-  mutate(teacher_id = factor(teacher_id),                     # <1>
-         question_no = factor(question_no),                   # <1>
-         seniority = factor(seniority)) %>%                   # <1>
+  mutate(teacher_id = factor(teacher_id),
+         question_no = factor(question_no),
+         seniority = factor(seniority)) %>%
   select(course_id, teacher_id, question_no, no_participants, resp_share, SET_score_avg, percent_failed_cur, academic_degree, seniority, sex)
 
 # Check & make sure it works
@@ -248,12 +256,15 @@ head(min(teacher_evals_clean$no_participants))
 write.csv(teacher_evals_clean, 
           file = "data-tidy/teacher_evals_clean.csv")
 ```
-1. Link for method used to change data type of select columns: <https://r4ds.hadley.nz/data-import>.
+
+Lines 9-11  
+Link for method used to change data type of select columns:
+<https://r4ds.hadley.nz/data-import>.
 
 **6. How many unique instructors and unique courses are present in the
 cleaned dataset?**
 
-```{r}
+``` {r}
 #| label: unique-courses
 #| echo: true
 #| eval: true
@@ -265,24 +276,27 @@ length(unique(teacher_evals_clean$teacher_id))
 # Check to make sure: View A tibble details
 teacher_evals_clean %>% 
   group_by(course_id) %>%
-  summarise(Total_classes = length(n()))                      # <2>
+  summarise(Total_classes = length(n()))
 
 teacher_evals_clean %>% 
   group_by(teacher_id) %>%
-  summarise(Total_Instructors = length(n()))                  # <2>
-
+  summarise(Total_Instructors = length(n()))
 ```
-2. Link that helped me figure out how to count unique classes and teachers: <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
+
+Lines 12,16  
+Link that helped me figure out how to count unique classes and teachers:
+<https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
 
 Question 6 answer/response: By River Mckegney
 
-This dataset appears to contain a total of 939 unique classes/courses and 297 instructors. 
+This dataset appears to contain a total of 939 unique classes/courses
+and 297 instructors.
 
 **7. One teacher-course combination has some missing values, coded as
 `NA`. Which instructor has these missing values? Which course? What
 variable are the missing values in?**
 
-```{r}
+``` {r}
 #| label: uncovering-missing-values
 #| echo: true
 #| eval: true
@@ -291,20 +305,24 @@ variable are the missing values in?**
 
 teacher_evals_clean %>%
   group_by(teacher_id, course_id) %>%
-  filter(if_any(everything(), is.na))                        # <3>
-
+  filter(if_any(everything(), is.na))
 ```
-3. How to filter for NA values: <https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
+
+Line 9  
+How to filter for NA values:
+<https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
 
 Question 7 answer/response: By River Mckegney
 
-The class that contains NAs is course ID PAB3SE004PA, with instructor ID 56347. The missing values are located within the column "percent_failed_cur".
+The class that contains NAs is course ID PAB3SE004PA, with instructor ID
+56347. The missing values are located within the column
+“percent_failed_cur”.
 
 **8. What are the demographics of the instructors in this study?
 Investigate the variables `academic_degree`, `seniority`, and `sex` and
-summarize your findings in \~3 complete sentences.**
+summarize your findings in ~3 complete sentences.**
 
-```{r}
+``` {r}
 #| label: exploring-demographics-of-instructors
 #| echo: true
 #| eval: true
@@ -367,13 +385,20 @@ teacher_evals_clean %>%
 
 Question 8 answer/response: By River Mckegney
 
-This dataset comprises approximately 54% male and 46% female instructors. More than half (about 57%) of the teachers have doctorate degrees, while a quarter (roughly 26%) have master degrees, 14% have no degree, and 3% have professional degrees. The majority of instructors (about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1 (approx. 11%), 8 (approx. 10%), 4 (approx. 8%), followed by 3, 5, 7 (all equivalent and about 5.4% each), 10 (approx. 5%), and 9 (approx. 3%) respectively. 
+This dataset comprises approximately 54% male and 46% female
+instructors. More than half (about 57%) of the teachers have doctorate
+degrees, while a quarter (roughly 26%) have master degrees, 14% have no
+degree, and 3% have professional degrees. The majority of instructors
+(about 30%) have seniority rank of 2, followed by 6 (approx. 12%), 1
+(approx. 11%), 8 (approx. 10%), 4 (approx. 8%), followed by 3, 5, 7 (all
+equivalent and about 5.4% each), 10 (approx. 5%), and 9 (approx. 3%)
+respectively.
 
 **9. Each course seems to have used a different subset of the nine
 evaluation questions. How many teacher-course combinations asked all
 nine questions?**
 
-```{r}
+``` {r}
 #| label: teacher-course-asked-every-question
 #| echo: true
 #| eval: true
@@ -382,7 +407,7 @@ nine questions?**
 
   teacher_evals_clean %>%
     group_by(course_id, teacher_id) %>%
-    summarize(question_count = n_distinct(question_no)) %>%   # <4>
+    summarize(question_count = n_distinct(question_no)) %>%
     ungroup() %>%
     filter(question_count == 9)
   
@@ -391,11 +416,16 @@ nine questions?**
     filter(course_id == "0000-SEM-SP",
            teacher_id == "38335")
 ```
-4. Source used to figure out how to count questions for each teacher-course combo: <https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition>
+
+Line 9  
+Source used to figure out how to count questions for each teacher-course
+combo:
+<https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition>
 
 Question 9 answer/response: By River Mckegney
 
-It appears 49 teacher/course combos (aka specific class sections) contained all 9 questions of the questionair. 
+It appears 49 teacher/course combos (aka specific class sections)
+contained all 9 questions of the questionair.
 
 ## Rate my Professor
 
@@ -403,7 +433,7 @@ It appears 49 teacher/course combos (aka specific class sections) contained all 
 Question 1 (I learnt a lot during the course.) across all their
 courses?**
 
-```{r}
+``` {r}
 #| label: quest 10 high & low instructor avg SET score 
 #| echo: true
 
@@ -439,17 +469,18 @@ teacher_evals_clean %>%
   group_by(course_id, teacher_id) %>%
   select(course_id, teacher_id, SET_score_avg)
   
-
 ```
+
 Question 10 answer/response: By River Mckegney
 
-It appears 38 instructor course combinations scored the highest rank, while 8 instructor course combinations scored the lowest.
+It appears 38 instructor course combinations scored the highest rank,
+while 8 instructor course combinations scored the lowest.
 
 **11. Which instructors with one year of experience had the highest and
 lowest average percentage of students failing in the current semester
 across all their courses?**
 
-```{r}
+``` {r}
 #| label: one-year-experience-failing-students
 
 # Quest 11
@@ -465,13 +496,15 @@ teacher_evals_clean %>%
 
 Question 11 answer/response: By River Mckegney
 
-It appears that instructors 104362 (about 70%) followed by 84688 (about 50%), and 101703 (35%) show the greatest range between max and min values for percent of students that failed the class.
+It appears that instructors 104362 (about 70%) followed by 84688 (about
+50%), and 101703 (35%) show the greatest range between max and min
+values for percent of students that failed the class.
 
 **12. Which female instructors with either a doctorate or professional
 degree had the highest and lowest average percent of students responding
 to the evaluation across all their courses?**
 
-```{r}
+``` {r}
 #| label: female-instructor-student-response
 # code chunk for Q11
 
@@ -484,13 +517,25 @@ teacher_evals_clean %>%
 
 Question 12 answer/response: By River Mckegney
 
-It appears that instructor 76394 (47% difference in percentage of respondents) and 38347 (about 35% difference in percentage of respondents) had the greatest difference or range in respondents for the evaluation questionair across all their classes.
+It appears that instructor 76394 (47% difference in percentage of
+respondents) and 38347 (about 35% difference in percentage of
+respondents) had the greatest difference or range in respondents for the
+evaluation questionair across all their classes.
 
 ## References:
-1. R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. "7  Data import". Website designed using Quarto. <https://r4ds.hadley.nz/data-import>.
 
-2. Stack overflow. "In R, how do I count unique values of a factor based on another factor?". Last modified 2016-07-14. <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
+1.  R for Data Science, 2nd edition. Hadley Wickham, Mine
+    Çetinkaya-Rundel, and Garrett Grolemund. “7 Data import”. Website
+    designed using Quarto. <https://r4ds.hadley.nz/data-import>.
 
-3. Stack overflow. "How to filter for rows containing NA?". Last modified 2022-11-21. <https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
+2.  Stack overflow. “In R, how do I count unique values of a factor
+    based on another factor?”. Last modified 2016-07-14.
+    <https://stackoverflow.com/questions/38382990/in-r-how-do-i-count-unique-values-of-a-factor-based-on-another-factor>.
 
-4. Stack overflow. "dplyr n_distinct with condition". Last modified 2022-11-02. <https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition>.
+3.  Stack overflow. “How to filter for rows containing NA?”. Last
+    modified 2022-11-21.
+    <https://stackoverflow.com/questions/74525000/how-to-filter-for-rows-containing-na>.
+
+4.  Stack overflow. “dplyr n_distinct with condition”. Last modified
+    2022-11-02.
+    <https://stackoverflow.com/questions/34637206/dplyr-n-distinct-with-condition>.
