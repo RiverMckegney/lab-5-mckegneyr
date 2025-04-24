@@ -484,7 +484,7 @@ teacher_evals_clean %>%
 
 Question 12 answer/response: By River Mckegney
 
-It appears that instructor 76394 (47% difference in respondents) and 38347 (about 35% difference in respondents) had the greatest difference or range in respondents for the evaluation questionair across all their classes.
+It appears that instructor 76394 (47% difference in percentage of respondents) and 38347 (about 35% difference in percentage of respondents) had the greatest difference or range in respondents for the evaluation questionair across all their classes.
 
 ## References:
 1. R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. "7  Data import". Website designed using Quarto. <https://r4ds.hadley.nz/data-import>.
