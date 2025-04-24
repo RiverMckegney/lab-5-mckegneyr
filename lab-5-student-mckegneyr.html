@@ -403,7 +403,14 @@ teacher_evals_clean %&gt;%
 <p><strong>12. Which female instructors with either a doctorate or professional degree had the highest and lowest average percent of students responding to the evaluation across all their courses?</strong></p>
 <pre class="{r}"><code>#| label: female-instructor-student-response
 # code chunk for Q11
-</code></pre>
+
+teacher_evals_clean %&gt;%
+  filter(sex == "female", academic_degree == "dr" | academic_degree == "prof") %&gt;% group_by(teacher_id) %&gt;%
+  summarize(prop_max = max(resp_share), prop_min = min(resp_share)) %&gt;%
+  mutate(prop_range = prop_max - prop_min) %&gt;%
+  arrange(desc(prop_range))</code></pre>
+<p>Question 12 answer/response: By River Mckegney</p>
+<p>It appears that instructor 76394 (47% difference in respondents) and 38347 (about 35% difference in respondents) had the greatest difference or range in respondents for the evaluation questionair across all their classes.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References:</h2>

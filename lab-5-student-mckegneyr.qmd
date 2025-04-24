@@ -475,7 +475,16 @@ to the evaluation across all their courses?**
 #| label: female-instructor-student-response
 # code chunk for Q11
 
+teacher_evals_clean %>%
+  filter(sex == "female", academic_degree == "dr" | academic_degree == "prof") %>% group_by(teacher_id) %>%
+  summarize(prop_max = max(resp_share), prop_min = min(resp_share)) %>%
+  mutate(prop_range = prop_max - prop_min) %>%
+  arrange(desc(prop_range))
 ```
+
+Question 12 answer/response: By River Mckegney
+
+It appears that instructor 76394 (47% difference in respondents) and 38347 (about 35% difference in respondents) had the greatest difference or range in respondents for the evaluation questionair across all their classes.
 
 ## References:
 1. R for Data Science, 2nd edition. Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund. "7  Data import". Website designed using Quarto. <https://r4ds.hadley.nz/data-import>.
